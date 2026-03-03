@@ -8,9 +8,17 @@ const normalizeImagePath = () => {
 normalizeImagePath();
 
 function index(req, res) {
+  let filteredPosts = postsData;
+
+  if (req.query.tag) {
+    filteredPosts = postsData.filter((post) =>
+      post.tags.includes(req.query.tag),
+    );
+  }
+
   res.json({
     message: "Lista dei post",
-    result: postsData,
+    result: filteredPosts,
   });
 }
 
