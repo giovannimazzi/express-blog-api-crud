@@ -1,4 +1,11 @@
 const postsData = require("../data/posts");
+const { apiUrl } = require("../config");
+
+const normalizeImagePath = () => {
+  postsData.forEach((post) => (post.image = apiUrl + post.image));
+};
+
+normalizeImagePath();
 
 function index(req, res) {
   res.json({

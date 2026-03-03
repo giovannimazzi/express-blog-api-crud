@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
-const apiUrl = `http://localhost:${port}`;
-
+const { port, apiUrl } = require("./config");
 const postsRouter = require("./routers/posts");
 
 app.use(express.static("public"));
