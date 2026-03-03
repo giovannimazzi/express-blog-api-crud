@@ -1,16 +1,16 @@
-const posts = require("../data/posts");
+const postsData = require("../data/posts");
 
 function index(req, res) {
   res.json({
     message: "Lista dei post",
-    result: posts,
+    result: postsData,
   });
 }
 
 function show(req, res) {
   res.json({
     message: "Dettagli del post " + req.params.id,
-    result: posts.find((p) => p.id === parseInt(req.params.id)),
+    result: postsData.find((p) => p.id === parseInt(req.params.id)),
   });
 }
 
@@ -36,10 +36,22 @@ function modify(req, res) {
 }
 
 function destroy(req, res) {
-  res.json({
+  const post = postsData.find((p) => p.id === parseInt(req.params.id));
+
+  const index = postsData.indexOf(post);
+
+  index !== -1 && postsData.splice(postsData.indexOf(post), 1);
+
+  console.log(`Lista aggiornata:`);
+  console.log(postsData);
+
+  res.sendStatus(204);
+
+  /*  res.json({
     message: "Eliminazione del post " + req.params.id,
-    result: posts.filter((p) => p.id !== parseInt(req.params.id)),
-  });
+    deleted: post,
+    result: postsData,
+  }); */
 }
 
 module.exports = { index, show, store, update, modify, destroy };
