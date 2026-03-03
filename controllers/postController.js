@@ -23,9 +23,19 @@ function index(req, res) {
 }
 
 function show(req, res) {
+  const post = postsData.find((p) => p.id === parseInt(req.params.id));
+
+  if (!post) {
+    res.status(404);
+    return res.json({
+      error: "Not Found",
+      message: "Post non trovato",
+    });
+  }
+
   res.json({
     message: "Dettagli del post " + req.params.id,
-    result: postsData.find((p) => p.id === parseInt(req.params.id)),
+    result: post,
   });
 }
 
@@ -52,6 +62,14 @@ function modify(req, res) {
 
 function destroy(req, res) {
   const post = postsData.find((p) => p.id === parseInt(req.params.id));
+
+  if (!post) {
+    res.status(404);
+    return res.json({
+      error: "Not Found",
+      message: "Post non trovato",
+    });
+  }
 
   const index = postsData.indexOf(post);
 
