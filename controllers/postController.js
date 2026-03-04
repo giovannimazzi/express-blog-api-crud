@@ -41,7 +41,7 @@ function show(req, res) {
 
 function store(req, res) {
   const body = req.body;
-  console.log(body3);
+  console.log(body);
   res.json({
     message: "Creazione nuovo post",
     result: "",
