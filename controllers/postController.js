@@ -1,11 +1,9 @@
 const postsData = require("../data/posts");
 const { apiUrl } = require("../config");
 
-const normalizeImagePath = () => {
-  postsData.forEach((post) => (post.image = apiUrl + post.image));
-};
+const normalizeImagePath = (post) => (post.image = apiUrl + post.image);
 
-normalizeImagePath();
+postsData.forEach((post) => normalizeImagePath(post));
 
 function index(req, res) {
   let filteredPosts = postsData;
@@ -50,6 +48,8 @@ function store(req, res) {
     tags: req.body.tags,
   };
 
+  normalizeImagePath(newPost);
+
   postsData.push(newPost);
   console.log(postsData);
 
@@ -58,10 +58,26 @@ function store(req, res) {
 }
 
 function update(req, res) {
-  res.json({
-    message: "Modifica integrale del post " + req.params.id,
-    result: "",
-  });
+  const post = postsData.find((p) => p.id === parseInt(req.params.id));
+
+  if (!post) {
+    res.status(404);
+    return res.json({
+      error: "Not Found",
+      message: "Post non trovato",
+    });
+  }
+
+  post.title = req.body.title;
+  post.content = req.body.content;
+  post.image = req.body.image;
+  post.tags = req.body.tags;
+
+  normalizeImagePath(post);
+
+  console.log(postsData);
+
+  res.json(post);
 }
 
 function modify(req, res) {
@@ -90,12 +106,6 @@ function destroy(req, res) {
   console.log(postsData);
 
   res.sendStatus(204);
-
-  /*  res.json({
-    message: "Eliminazione del post " + req.params.id,
-    deleted: post,
-    result: postsData,
-  }); */
 }
 
 module.exports = { index, show, store, update, modify, destroy };
