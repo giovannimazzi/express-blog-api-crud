@@ -6,6 +6,8 @@ const normalizeImagePath = (post) => (post.image = apiUrl + post.image);
 postsData.forEach((post) => normalizeImagePath(post));
 
 function index(req, res) {
+  /* throw new Error("Errore generato apposta!"); */
+
   let filteredPosts = postsData;
 
   if (req.query.tag) {
